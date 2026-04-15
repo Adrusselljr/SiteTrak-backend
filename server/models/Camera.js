@@ -4,10 +4,7 @@ const cameraSchema = new mongoose.Schema({
     // =========================
     // RELATIONSHIP
     // =========================
-    // projectId: {
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     required: true,
-    // },
+    // projectId: { type: mongoose.Schema.Types.ObjectId, required: true },
 
     subcontractor: String,
 
@@ -15,7 +12,11 @@ const cameraSchema = new mongoose.Schema({
     // BASIC IDENTIFIERS
     // =========================
     cameraNumber: String,
-    type: String, // 4K, LV, LVE, PTZ, GY, GF
+    type: {
+        type: String,
+        enum: ['4K', 'LV', 'LVE', 'PTZ', 'GY', 'GF'],
+        required: true,
+    },
 
     // =========================
     // LOCATION DATA
@@ -67,40 +68,33 @@ const cameraSchema = new mongoose.Schema({
     // =========================
     status: {
         type: String,
-        default: "not_started", // not_started | in_progress | complete
+        enum: ['not_started', 'in_progress', 'complete'],
+        default: "not_started",
     },
 
     // =========================
     // NOTES (TECH / FOREMAN)
     // =========================
-    notes: {
-        type: String,
-        default: ''
-    },
+    notes: { type: String, default: '' },
 
     // =========================
     // SOFT DELETE SYSTEM
     // =========================
     // Marks record as logically deleted (not physically removed)
-    isDeleted: {
-        type: Boolean,
-        default: false,
-    },
+    isDeleted: { type: Boolean, default: false },
     // Timestamp of when deletion occurred
-    deletedAt: {
-        type: Date,
-        default: null
-    },
+    deletedAt: { type: Date, default: null },
 
     // =========================
     // ACCOUNTABILITY / AUDIT INFO
     // =========================
     lastUpdatedBy: {
-        userId: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "User"
+        userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+        role: {
+            type: String,
+            enum: ['pm', 'foreman', 'tech'],
+            default: 'tech',
         },
-        role: String, // pm | foreman | tech
         name: String, // snapshot for quick readability
     },
 
@@ -108,19 +102,14 @@ const cameraSchema = new mongoose.Schema({
     // FULL CHANGE HISTORY LOG
     // =========================
     activityLog: [{
-        userId: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "User",
-        },
+        userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
         action: String, // "update", "create", "status_change"
         field: String, // e.g. "network.ip"
         oldValue: mongoose.Schema.Types.Mixed,
         newValue: mongoose.Schema.Types.Mixed,
-        timeStamp: {
-            type: Date,
-            default: Date.now
-        }
-    }]
+        timeStamp: { type: Date, default: Date.now }
+    }],
+    
 }, { timestamps: true });
 
 module.exports = mongoose.model('Camera', cameraSchema);
