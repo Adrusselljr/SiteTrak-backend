@@ -5,7 +5,26 @@ const Camera = require('../models/Camera')
 // =========================
 exports.createCamera = async (req, res) => {
     try {
-        const camera = await Camera.create(req.body)
+        const { subcontractor, cameraNumber, type, location, network, roughIn, install, notes } = req.body // removed projectId till added later
+
+        const camera = await Camera.create({
+            // projectId,
+            subcontractor,
+            cameraNumber,
+            type,
+
+            // nested objects
+            location: location || {},
+            network: network || {},
+            roughIn: roughIn || {},
+            install: install || {},
+            notes: notes || '',
+
+            // system-controlled defaults
+            status: "not_started",
+            isDeleted: false,
+            deletedAt: null
+        })
         res.status(201).json({ message: "Camera created", payload: camera })
     }
     catch (err) {
@@ -25,16 +44,28 @@ exports.createBulkCameras = async (req, res) => {
             return res.status(400).json({ message: "Request body must be an array of cameras" })
         }
         // format each camera
-        const formattedCameras = cameras.map(cam => ({
-            ...cam,
-            // ensure required fields
-            phase: cam.phase,
-            // defaults
-            notes: cam.notes || '',
-            status: cam.status || 'not_started',
-            isDeleted: false,
-            deletedAt: null
-        }))
+        const formattedCameras = cameras.map(cam => {
+            const { subcontractor, cameraNumber, type, location, network, roughIn, install, notes } = cam // removed projectId till added later
+
+            return {
+                // projectId,
+                subcontractor,
+                cameraNumber,
+                type,
+
+                // nested objects
+                location: location || {},
+                network: network || {},
+                roughIn: roughIn || {},
+                install: install || {},
+                notes: notes || '',
+
+                // system-controlled defaults
+                status: "not_started",
+                isDeleted: false,
+                deletedAt: null
+            }
+        })
 
         const created = await Camera.insertMany(formattedCameras)
         res.status(201).json({
