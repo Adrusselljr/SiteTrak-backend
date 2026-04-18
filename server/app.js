@@ -13,6 +13,7 @@ mongoose
 const indexRouter = require('./routes/index')
 const cameraRoutes = require('./routes/cameraRoutes')
 const companyRoutes = require('./routes/companyRoutes')
+const userRoutes = require('./routes/userRoutes')
 
 const app = express();
 
@@ -30,6 +31,7 @@ app.use(logger('dev'));
 app.use('/', indexRouter)
 app.use('/api/cameras', cameraRoutes)
 app.use('/api/company', companyRoutes)
+app.use('/api/user', userRoutes)
 
 // ========================
 // 404 HANDLER

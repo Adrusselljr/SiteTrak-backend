@@ -6,10 +6,10 @@ const User = require('../models/User')
 // =========================
 exports.createUser = async (req, res) => {
     try {
-        const { companyId, fisrtName, lastName, email, password, role } = req.body
+        const { companyId, firstName, lastName, email, password, role } = req.body
 
         // basic validation
-        if (!companyId || !fisrtName || !lastName || !email || !password) {
+        if (!companyId || !firstName || !lastName || !email || !password) {
             return res.status(400).json({ message: "Missing required fields" })
         }
 
@@ -42,7 +42,7 @@ exports.createUser = async (req, res) => {
 // =========================
 // GET ALL USERS
 // =========================
-exports.getUser = async (req, res) => {
+exports.getUsers = async (req, res) => {
     try {
         const users = await User.find().populate('companyId')
         res.status(200).json({ payload: users })
@@ -55,7 +55,7 @@ exports.getUser = async (req, res) => {
 // =========================
 // GET SINGLE USER
 // =========================
-expprts.getUser = async (req, res) => {
+exports.getUser = async (req, res) => {
     try {
         const { id } = req.params
 
@@ -64,7 +64,7 @@ expprts.getUser = async (req, res) => {
             return res.status(400).json({ message: "Invalid userId" })
         }
 
-        const user = await User.findOne(id).populate('companyId')
+        const user = await User.findById(id).populate('companyId')
         if (!user) {
             return res.status(404).json({ message: "User not found" })
         }
