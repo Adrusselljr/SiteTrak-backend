@@ -43,7 +43,8 @@ exports.getCompanies = async (req, res) => {
 // =========================
 exports.getCompany = async (req, res) => {
     try {
-        const company = await Company.findOne({ _id: req.params.id })
+        const { id } = req.params
+        const company = await Company.findOne(id)
         
         if (!company) {
             return res.status(404).json({ message: "Company not found" })
@@ -97,7 +98,6 @@ exports.updateCompany = async (req, res) => {
 exports.deleteCompany = async (req, res) => {
     try {
         const { id } = req.params
-
         const deleted = await Company.findByIdAndDelete(id)
 
         if (!deleted) {

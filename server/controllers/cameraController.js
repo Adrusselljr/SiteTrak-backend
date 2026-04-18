@@ -97,7 +97,6 @@ exports.getCameras = async (req, res) => {
 exports.getCamera = async (req, res) => {
     try {
         const { id } = req.params
-        
         const camera = await Camera.findOne({ id, isDeleted: false })
 
         if (!camera) {
@@ -171,7 +170,6 @@ exports.deleteCamera = async (req, res) => {
 exports.restoreCamera = async (req, res) => {
     try {
         const { id } = req.params
-
         const camera = await Camera.findByIdAndUpdate(id, { isDeleted: false, deletedAt: null, status: "in_progress" }, { returnDocument: 'after' })
 
         if (!camera) {
