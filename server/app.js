@@ -11,7 +11,8 @@ mongoose
     .catch(err => console.log('Something went wrong when connecting to the database ', err))
 
 const indexRouter = require('./routes/index')
-const cameraRoutes = require('./routes/cameraRoutes');
+const cameraRoutes = require('./routes/cameraRoutes')
+const companyRoutes = require('./routes/companyRoutes')
 
 const app = express();
 
@@ -28,6 +29,7 @@ app.use(logger('dev'));
 // ========================
 app.use('/', indexRouter)
 app.use('/api/cameras', cameraRoutes)
+app.use('/api/company', companyRoutes)
 
 // ========================
 // 404 HANDLER
