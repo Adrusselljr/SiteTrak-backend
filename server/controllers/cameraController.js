@@ -97,7 +97,7 @@ exports.getCameras = async (req, res) => {
 exports.getCamera = async (req, res) => {
     try {
         const { id } = req.params
-        const camera = await Camera.findOne({ id, isDeleted: false })
+        const camera = await Camera.findById({ id, isDeleted: false })
 
         if (!camera) {
             return res.status(404).json({ message: "Camera not found" })

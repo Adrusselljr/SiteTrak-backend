@@ -6,15 +6,15 @@ const User = require('../models/User')
 // =========================
 exports.createUser = async (req, res) => {
     try {
-        const { companyId, firstName, lastName, email, password, role } = req.body
+        const { company, firstName, lastName, email, password, role } = req.body
 
         // basic validation
-        if (!companyId || !firstName || !lastName || !email || !password) {
+        if (!company || !firstName || !lastName || !email || !password) {
             return res.status(400).json({ message: "Missing required fields" })
         }
 
         // validate objectId
-        if (!mongoose.Types.ObjectId.isValid(companyId)) {
+        if (!mongoose.Types.ObjectId.isValid(company)) {
             return res.status(400).json({ message: "Invalid companyId" })
         }
 
@@ -25,7 +25,7 @@ exports.createUser = async (req, res) => {
         }
 
         const user = await User.create({
-            companyId,
+            company,
             firstName,
             lastName,
             email,
@@ -72,6 +72,23 @@ exports.getUser = async (req, res) => {
     }
     catch (err) {
         res.status(500).json({ message: "error", error: err.message })
+    }
+}
+
+// =========================
+// GET USERS BY COMPANY
+// =========================
+exports.getUsersByCompany = async (req, res) => {
+    try {
+        const { companyId } = req.params
+
+        const users = await User.find({
+            company: companyId
+        }).populate('company')
+        res.status(200).json({ payload: users })
+    }
+    catch (err) {
+        res.status(500).json({ message: 'error', error: err.message })
     }
 }
 

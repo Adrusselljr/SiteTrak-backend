@@ -14,6 +14,7 @@ const indexRouter = require('./routes/index')
 const cameraRoutes = require('./routes/cameraRoutes')
 const companyRoutes = require('./routes/companyRoutes')
 const userRoutes = require('./routes/userRoutes')
+const projectRoutes = require('./routes/projectRoutes')
 
 const app = express();
 
@@ -32,6 +33,7 @@ app.use('/', indexRouter)
 app.use('/api/cameras', cameraRoutes)
 app.use('/api/company', companyRoutes)
 app.use('/api/user', userRoutes)
+app.use('/api/project', projectRoutes)
 
 // ========================
 // 404 HANDLER

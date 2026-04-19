@@ -4,7 +4,7 @@ const userSchema = new mongoose.Schema({
     // =========================
     // COMPANY RELATIONSHIP
     // =========================
-    companyId: {
+    company: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Company',
         required: true

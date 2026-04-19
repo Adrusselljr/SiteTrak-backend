@@ -4,7 +4,7 @@ const cameraSchema = new mongoose.Schema({
     // =========================
     // RELATIONSHIP
     // =========================
-    // projectId: { type: mongoose.Schema.Types.ObjectId, required: true },
+    // project: { type: mongoose.Schema.Types.ObjectId, required: true },
 
     subcontractor: String,
 
