@@ -12,8 +12,7 @@ const projectSchema = new mongoose.Schema({
 
     subcontractors: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Company',
-        required: true
+        ref: 'Company'
     }],
 
     // =========================
@@ -45,11 +44,12 @@ const projectSchema = new mongoose.Schema({
     // PHASES
     // =========================
     phases: [{
-        name: String, // "Phase 1", "Phase 2"
-        description: String,
-        isActive: {
-            type: Boolean,
-            default: false
+        name: { type: String, required: true }, // "Phase 1", "Phase 2"
+        pfhoDate: { type: Date, required: true },
+        status: {
+            type: String,
+            enum: ['not_started', 'active', 'completed'], 
+            default: 'not_started'
         }
     }],
 
